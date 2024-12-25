@@ -1,3 +1,4 @@
+// Define destinations globally
 const destinations = [
   { label: 'Closest Starbucks', value: 0.5, unit: 'light milliseconds', description: '~150 kilometers' },
   { label: 'LA to NYC', value: 13.15, unit: 'light milliseconds', description: '~3,944 kilometers' },
