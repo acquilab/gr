@@ -11,19 +11,37 @@
     <div class="card">
       <h1>Relativistic Time Dilation Calculator</h1>
       <div class="slider-section">
-        <label for="velocity-slider">Velocity (as fraction of light speed): <span id="velocity-label">99%</span></label>
-        <input type="range" id="velocity-slider" min="0" max="100" step="0.0001" value="99">
+        <label for="velocity-slider">
+          Velocity (as fraction of light speed): <span id="velocity-label">99.000000000000%</span>
+        </label>
+        <input
+          type="range"
+          id="velocity-slider"
+          min="0"
+          max="100"
+          step="0.01"
+          value="25"
+        />
       </div>
       <div class="slider-section">
-        <label for="distance-slider">Distance: <span id="distance-label">Closest Starbucks</span></label>
-        <input type="range" id="distance-slider" min="0" max="8" step="1" value="0">
+        <label for="distance-slider">
+          Distance: <span id="distance-label">Closest Starbucks</span>
+        </label>
+        <input
+          type="range"
+          id="distance-slider"
+          min="0"
+          max="8"
+          step="1"
+          value="0"
+        />
       </div>
       <div class="results">
         <h2>Relativistic Effects:</h2>
         <p><strong>Distance:</strong> <span id="distance-value">~150 kilometers</span></p>
         <p><strong>Time experienced by traveler:</strong> <span id="traveler-time">0 seconds</span></p>
         <p><strong>Time for stationary observer:</strong> <span id="observer-time">0 seconds</span></p>
-        <p><strong>Time dilation factor (γ):</strong> <span id="gamma">1.00</span></p>
+        <p><strong>Time dilation factor (γ):</strong> <span id="gamma">1.000</span></p>
         <p><strong>Time difference:</strong> <span id="time-difference">0 seconds</span></p>
       </div>
       <div class="velocity-info">
@@ -31,7 +49,7 @@
         <p><strong>Meters per second:</strong> <span id="velocity-mps">0</span> m/s</p>
         <p><strong>Kilometers per second:</strong> <span id="velocity-kps">0</span> km/s</p>
         <p><strong>Kilometers per hour:</strong> <span id="velocity-kph">0</span> km/h</p>
-        <p><strong>Percentage of light speed:</strong> <span id="velocity-percent">99%</span></p>
+        <p><strong>Percentage of light speed:</strong> <span id="velocity-percent">99.000000000000%</span></p>
       </div>
     </div>
   </div>
