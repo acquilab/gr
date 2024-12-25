@@ -13,93 +13,139 @@ const destinations = [
     { label: 'Andromeda\nGalaxy', value: 2500000, unit: 'light years', description: '2.5 million light years' }
 ];
 
-function formatNumber(num) {
-    return new Intl.NumberFormat().format(Math.round(num));
+const velocityMarks = [
+    { label: '0%', value: 0 },
+    { label: '80%', value: 80 },
+    { label: '99%', value: 99 },
+    { label: '100%', value: 99.999999999999 }
+];
+
+// Transform functions for velocity slider
+function transformSliderToVelocity(sliderPos) {
+    if (sliderPos <= 25) {
+        return (sliderPos * 99.9999) / 25;
+    } else {
+        const localPos = (sliderPos - 25) / 75;
+        return 99.9999 + localPos * (99.999999999999 - 99.9999);
+    }
 }
 
-function calculateTimeDilation(velocity, distance, unit) {
-    const velocityFraction = velocity / 100;
-    const gamma = 1 / Math.sqrt(1 - velocityFraction * velocityFraction);
-    
-    // Convert distance to light-seconds
-    let distanceInSeconds = distance;
-    switch(unit) {
-        case 'light milliseconds': distanceInSeconds = distance / 1000; break;
-        case 'light minutes': distanceInSeconds = distance * 60; break;
-        case 'light hours': distanceInSeconds = distance * 3600; break;
-        case 'light years': distanceInSeconds = distance * 365.25 * 24 * 3600; break;
+function transformVelocityToSlider(velocityPercent) {
+    if (velocityPercent <= 99.9999) {
+        return (velocityPercent * 25) / 99.9999;
+    } else {
+        return 25 + ((velocityPercent - 99.9999) * 75) / (99.999999999999 - 99.9999);
     }
-    
-    const properTime = distanceInSeconds / velocityFraction;
-    const observerTime = properTime * gamma;
-    
+}
+
+function calculateTimes(distance, unit, velocity) {
+    const distanceInSeconds = (() => {
+        switch (unit) {
+            case 'light milliseconds':
+                return distance / 1000;
+            case 'light seconds':
+                return distance;
+            case 'light minutes':
+                return distance * 60;
+            case 'light hours':
+                return distance * 3600;
+            case 'light years':
+                return distance * 365.25 * 24 * 3600;
+            default:
+                return distance;
+        }
+    })();
+
+    if (velocity === 0) {
+        return {
+            properTimeSeconds: Infinity,
+            observerTimeSeconds: Infinity
+        };
+    }
+
+    const velocityDecimal = velocity / 100;
+    const gamma = 1 / Math.sqrt(1 - velocityDecimal ** 2);
+    const properTimeSeconds = distanceInSeconds / velocityDecimal;
+    const observerTimeSeconds = properTimeSeconds * gamma;
+
     return {
-        gamma,
-        properTime,
-        observerTime,
-        velocityInMetersPerSecond: velocityFraction * c
+        properTimeSeconds,
+        observerTimeSeconds
     };
 }
 
 function formatTime(seconds) {
-    if (seconds < 0.001) return `${(seconds * 1000000).toFixed(1)} microseconds`;
-    if (seconds < 1) return `${(seconds * 1000).toFixed(1)} milliseconds`;
-    if (seconds < 60) return `${seconds.toFixed(1)} seconds`;
-    if (seconds < 3600) return `${(seconds / 60).toFixed(1)} minutes`;
-    if (seconds < 86400) return `${(seconds / 3600).toFixed(1)} hours`;
-    if (seconds < 31557600) return `${(seconds / 86400).toFixed(1)} days`;
-    return `${(seconds / 31557600).toFixed(1)} years`;
+    if (!isFinite(seconds)) return "∞";
+    if (isNaN(seconds)) return "undefined";
+    if (seconds === 0) return "0 seconds";
+
+    const absSeconds = Math.abs(seconds);
+    if (absSeconds < 0.001) return `${(seconds * 1000000).toFixed(1)} microseconds`;
+    if (absSeconds < 1) return `${(seconds * 1000).toFixed(1)} milliseconds`;
+    if (absSeconds < 60) return `${seconds.toFixed(1)} seconds`;
+    if (absSeconds < 3600) return `${(seconds / 60).toFixed(1)} minutes`;
+    if (absSeconds < 86400) return `${(seconds / 3600).toFixed(1)} hours`;
+    if (absSeconds < 31557600) return `${(seconds / 86400).toFixed(1)} days`;
+    return `${Math.round(seconds / 31557600).toLocaleString()} years`;
 }
 
-function updateDisplay() {
-    const velocity = parseFloat(document.getElementById('velocitySlider').value);
-    const destinationIndex = parseInt(document.getElementById('distanceSlider').value);
-    const destination = destinations[destinationIndex];
-    
-    const results = calculateTimeDilation(velocity, destination.value, destination.unit);
-    
-    document.getElementById('velocityValue').textContent = velocity.toFixed(12);
-    document.getElementById('distanceDisplay').textContent = `${destination.value} ${destination.unit}`;
-    document.getElementById('effectsDistance').textContent = `${destination.value} ${destination.unit}`;
-    document.getElementById('travelerTime').textContent = formatTime(results.properTime);
-    document.getElementById('observerTime').textContent = formatTime(results.observerTime);
-    document.getElementById('timeDilation').textContent = results.gamma.toFixed(3);
-    document.getElementById('timeDifference').textContent = formatTime(results.observerTime - results.properTime);
-    
-    document.getElementById('metersPerSecond').textContent = `${formatNumber(results.velocityInMetersPerSecond)} m/s`;
-    document.getElementById('kilometersPerSecond').textContent = `${formatNumber(results.velocityInMetersPerSecond / 1000)} km/s`;
-    document.getElementById('kilometersPerHour').textContent = `${formatNumber(results.velocityInMetersPerSecond * 3.6)} km/h`;
-    document.getElementById('lightSpeedPercent').textContent = `${velocity.toFixed(12)}%`;
-    document.getElementById('remainingToC').textContent = (1 - velocity/100).toExponential(12);
+function formatDistance(value, unit) {
+    if (unit === 'light milliseconds') return `${value.toFixed(1)} light milliseconds`;
+    if (unit === 'light seconds') return `${value.toFixed(1)} light seconds`;
+    if (unit === 'light minutes') return `${value.toFixed(1)} light minutes`;
+    if (unit === 'light hours') return `${value.toFixed(1)} light hours`;
+    if (value >= 1000000) return `${(value / 1000000).toFixed(1)} million light years`;
+    if (value >= 1000) return `${(value / 1000).toFixed(1)} thousand light years`;
+    return `${value.toFixed(1)} ${unit}`;
 }
 
-// Create destination tick marks
-function createDestinationTicks() {
-    const tickMarksContainer = document.getElementById('distanceTickMarks');
-    const totalDestinations = destinations.length;
-
-    destinations.forEach((dest, index) => {
-        const tick = document.createElement('div');
-        tick.className = 'tick';
-        tick.style.left = `${(index / (totalDestinations - 1)) * 100}%`;
-
+function createMarks() {
+    // Create velocity marks
+    const velocityMarksContainer = document.getElementById('velocityMarks');
+    velocityMarks.forEach(mark => {
+        const markEl = document.createElement('div');
+        markEl.className = 'mark';
+        markEl.style.left = `${transformVelocityToSlider(mark.value)}%`;
+        
         const line = document.createElement('div');
-        line.className = 'tick-line';
-
+        line.className = 'mark-line';
+        
         const label = document.createElement('div');
-        label.className = 'tick-label';
-        label.textContent = dest.label;
+        label.className = 'mark-label';
+        label.textContent = mark.label;
+        
+        markEl.appendChild(line);
+        markEl.appendChild(label);
+        velocityMarksContainer.appendChild(markEl);
+    });
 
-        tick.appendChild(line);
-        tick.appendChild(label);
-        tickMarksContainer.appendChild(tick);
+    // Create distance marks
+    const distanceMarksContainer = document.getElementById('distanceMarks');
+    destinations.forEach((dest, index) => {
+        const markEl = document.createElement('div');
+        markEl.className = 'mark';
+        markEl.style.left = `${(index / (destinations.length - 1)) * 100}%`;
+        
+        const line = document.createElement('div');
+        line.className = 'mark-line';
+        
+        const label = document.createElement('div');
+        label.className = 'mark-label';
+        label.textContent = dest.label;
+        
+        markEl.appendChild(line);
+        markEl.appendChild(label);
+        distanceMarksContainer.appendChild(markEl);
     });
 }
 
-// Add event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    createDestinationTicks();
-    document.getElementById('velocitySlider').addEventListener('input', updateDisplay);
-    document.getElementById('distanceSlider').addEventListener('input', updateDisplay);
-    updateDisplay();
-});
+function updateDisplay() {
+    const velocitySlider = document.getElementById('velocitySlider');
+    const sliderValue = parseFloat(velocitySlider.value);
+    const velocity = transformSliderToVelocity(sliderValue);
+    const destinationIndex = parseInt(document.getElementById('distanceSlider').value);
+    const currentDest = destinations[destinationIndex];
+    
+    // Calculate values
+    const velocityDecimal = velocity / 100;
+    const gamma = 1 / Math.sqrt(1
