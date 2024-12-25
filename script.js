@@ -1,30 +1,43 @@
-// Define destinations globally
-const destinations = [
-  { label: 'Closest Starbucks', value: 0.5, unit: 'light milliseconds', description: '~150 kilometers' },
-  { label: 'LA to NYC', value: 13.15, unit: 'light milliseconds', description: '~3,944 kilometers' },
-  { label: 'Moon', value: 1.3, unit: 'light seconds', description: '~384,400 km' },
-  { label: 'Sun', value: 8.3, unit: 'light minutes', description: '~150 million km' },
-  { label: 'Edge of Solar System', value: 4.1, unit: 'light hours', description: '~18 billion km' },
-  { label: '1 Light Year', value: 1, unit: 'light years', description: '~9.46 trillion km' },
-  { label: 'Proxima Centauri', value: 4.2, unit: 'light years', description: '~40 trillion km' },
-  { label: 'Edge of Milky Way', value: 100000, unit: 'light years', description: '100,000 light years' },
-  { label: 'Andromeda Galaxy', value: 2500000, unit: 'light years', description: '2.5 million light years' },
-];
+const formatTime = (seconds) => {
+  if (seconds === Infinity || isNaN(seconds)) {
+    return "∞";
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const velocitySlider = document.getElementById('velocity-slider');
-  const distanceSlider = document.getElementById('distance-slider');
-  const velocityLabel = document.getElementById('velocity-label');
-  const distanceLabel = document.getElementById('distance-label');
-  const distanceValue = document.getElementById('distance-value');
-  const travelerTime = document.getElementById('traveler-time');
-  const observerTime = document.getElementById('observer-time');
-  const gammaValue = document.getElementById('gamma');
-  const timeDifference = document.getElementById('time-difference');
-  const velocityMps = document.getElementById('velocity-mps');
-  const velocityKps = document.getElementById('velocity-kps');
-  const velocityKph = document.getElementById('velocity-kph');
-  const velocityPercent = document.getElementById('velocity-percent');
+  const absSeconds = Math.abs(seconds);
+
+  if (absSeconds < 0.001) {
+    return `${(seconds * 1e6).toFixed(2)} microseconds`;
+  } else if (absSeconds < 1) {
+    return `${(seconds * 1e3).toFixed(2)} milliseconds`;
+  } else if (absSeconds < 60) {
+    return `${seconds.toFixed(2)} seconds`;
+  } else if (absSeconds < 3600) {
+    return `${(seconds / 60).toFixed(2)} minutes`;
+  } else if (absSeconds < 86400) {
+    return `${(seconds / 3600).toFixed(2)} hours`;
+  } else if (absSeconds < 31557600) { // 1 year in seconds
+    return `${(seconds / 86400).toFixed(2)} days`;
+  } else if (absSeconds < 1e8) {
+    return `${(seconds / 31557600).toFixed(2)} years`;
+  } else {
+    return `${(seconds / 31557600000).toFixed(2)} million years`;
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const velocitySlider = document.getElementById("velocity-slider");
+  const distanceSlider = document.getElementById("distance-slider");
+  const velocityLabel = document.getElementById("velocity-label");
+  const distanceLabel = document.getElementById("distance-label");
+  const distanceValue = document.getElementById("distance-value");
+  const travelerTime = document.getElementById("traveler-time");
+  const observerTime = document.getElementById("observer-time");
+  const gammaValue = document.getElementById("gamma");
+  const timeDifference = document.getElementById("time-difference");
+  const velocityMps = document.getElementById("velocity-mps");
+  const velocityKps = document.getElementById("velocity-kps");
+  const velocityKph = document.getElementById("velocity-kph");
+  const velocityPercent = document.getElementById("velocity-percent");
 
   const c = 299792458;
 
@@ -34,14 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       const localPos = (sliderPos - 25) / 75;
       return 99.999999 + localPos * (99.999999999999 - 99.999999);
-    }
-  };
-
-  const transformVelocityToSlider = (velocityPercent) => {
-    if (velocityPercent <= 99.999999) {
-      return (velocityPercent * 25) / 99.999999;
-    } else {
-      return 25 + ((velocityPercent - 99.999999) * 75) / (99.999999999999 - 99.999999);
     }
   };
 
@@ -66,17 +71,33 @@ document.addEventListener('DOMContentLoaded', () => {
     distanceLabel.textContent = destination.label;
     distanceValue.textContent = destination.description;
 
-    const distanceInSeconds = destination.value;
+    const distanceInSeconds = (() => {
+      switch (destination.unit) {
+        case "light milliseconds":
+          return destination.value / 1000;
+        case "light seconds":
+          return destination.value;
+        case "light minutes":
+          return destination.value * 60;
+        case "light hours":
+          return destination.value * 3600;
+        case "light years":
+          return destination.value * 31557600 * 365.25;
+        default:
+          return destination.value;
+      }
+    })();
+
     const properTime = distanceInSeconds / velocityDecimal;
     const observerTimeValue = properTime * gamma;
 
-    travelerTime.textContent = `${properTime.toFixed(2)} seconds`;
-    observerTime.textContent = `${observerTimeValue.toFixed(2)} seconds`;
+    travelerTime.textContent = formatTime(properTime);
+    observerTime.textContent = formatTime(observerTimeValue);
     gammaValue.textContent = gamma.toFixed(3);
-    timeDifference.textContent = `${(observerTimeValue - properTime).toFixed(2)} seconds`;
+    timeDifference.textContent = formatTime(observerTimeValue - properTime);
   };
 
-  velocitySlider.addEventListener('input', updateUI);
-  distanceSlider.addEventListener('input', updateUI);
+  velocitySlider.addEventListener("input", updateUI);
+  distanceSlider.addEventListener("input", updateUI);
   updateUI();
 });
