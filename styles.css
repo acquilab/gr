@@ -5,13 +5,11 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.5;
-}
-
-.container {
-    min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
     background-color: #0B0C10;
+    color: #9CA3AF;
+    line-height: 1.5;
+    min-height: 100vh;
     padding: 2rem;
 }
 
@@ -24,9 +22,8 @@ body {
 }
 
 .title {
-    font-size: 2.25rem;
-    font-weight: 700;
     color: #4B7BF5;
+    font-size: 2.25rem;
     text-align: center;
     margin-bottom: 0.5rem;
 }
@@ -37,93 +34,85 @@ body {
     margin-bottom: 2rem;
 }
 
-.card {
+.calculator {
     background-color: #1C2129;
-    border: none;
     border-radius: 0.5rem;
-    overflow: hidden;
+    padding: 2rem;
 }
 
-.card-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #2D3748;
-}
-
-.card-title {
+.section-title {
     color: #9CA3AF;
-    font-size: 1.25rem;
-    font-weight: 600;
+    margin-bottom: 2rem;
 }
 
-.card-content {
-    padding: 1.5rem;
-}
-
-.section {
+.control-section {
     margin-bottom: 3rem;
 }
 
 .label {
     display: block;
-    color: #9CA3AF;
     margin-bottom: 1rem;
 }
 
 .slider-container {
     position: relative;
-    width: 100%;
-    margin-bottom: 6rem;
+    margin-bottom: 3rem;
 }
 
-.velocity-slider,
-.distance-slider {
+.slider {
     width: 100%;
-    height: 0.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
+    height: 8px;
+    border-radius: 4px;
     appearance: none;
     outline: none;
 }
 
 .velocity-slider {
-    background: linear-gradient(to right, #1D4ED8, #60A5FA);
+    background: linear-gradient(90deg, #1D4ED8, #60A5FA);
 }
 
 .distance-slider {
-    background: linear-gradient(to right, #065F46, #34D399);
+    background: linear-gradient(90deg, #065F46, #34D399);
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .mark-container {
     position: absolute;
     width: 100%;
-    left: 0;
-    margin-top: 1rem;
+    top: 24px;
 }
 
 .mark {
     position: absolute;
-    width: 60px;
     transform: translateX(-50%);
-}
-
-.mark-line {
-    height: 1rem;
     width: 1px;
-    background-color: #4B5563;
-    margin: 0 auto 0.25rem;
+    background: #4B5563;
+    height: 8px;
 }
 
 .mark-label {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 0.75rem;
     color: #6B7280;
-    text-align: center;
-    white-space: pre-line;
+    white-space: pre;
 }
 
 .results-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    margin-top: 2rem;
 }
 
 @media (min-width: 768px) {
@@ -133,95 +122,24 @@ body {
 }
 
 .panel {
-    background-color: #1C2129;
-    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
     padding: 1.5rem;
+    border-radius: 0.5rem;
 }
 
-.panel-title-blue,
-.panel-title-green {
-    font-weight: 700;
-    font-size: 1.125rem;
+.panel-title {
+    font-size: 1.25rem;
     margin-bottom: 1rem;
 }
 
-.panel-title-blue {
+.panel-title.blue {
     color: #4B7BF5;
 }
 
-.panel-title-green {
+.panel-title.green {
     color: #4ADE80;
 }
 
-.panel-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.panel-text {
-    color: #9CA3AF;
-}
-
-/* Slider thumb styles */
-.velocity-slider::-webkit-slider-thumb,
-.distance-slider::-webkit-slider-thumb {
-    appearance: none;
-    width: 1rem;
-    height: 1rem;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.velocity-slider::-moz-range-thumb,
-.distance-slider::-moz-range-thumb {
-    width: 1rem;
-    height: 1rem;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
-
-/* Custom styles for the slider track */
-.velocity-slider::-webkit-slider-runnable-track,
-.distance-slider::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 0.5rem;
-    border-radius: 0.5rem;
-}
-
-.velocity-slider::-moz-range-track,
-.distance-slider::-moz-range-track {
-    width: 100%;
-    height: 0.5rem;
-    border-radius: 0.5rem;
-}
-
-/* Focus styles */
-.velocity-slider:focus,
-.distance-slider:focus {
-    outline: none;
-}
-
-.velocity-slider:active::-webkit-slider-thumb,
-.distance-slider:active::-webkit-slider-thumb {
-    transform: scale(1.1);
-}
-
-.velocity-slider:active::-moz-range-thumb,
-.distance-slider:active::-moz-range-thumb {
-    transform: scale(1.1);
-}
-
-/* Disable default focus ring */
-.velocity-slider:focus::-webkit-slider-thumb,
-.distance-slider:focus::-webkit-slider-thumb {
-    outline: none;
-}
-
-.velocity-slider:focus::-moz-range-thumb,
-.distance-slider:focus::-moz-range-thumb {
-    outline: none;
+.panel-content p {
+    margin-bottom: 0.5rem;
 }
