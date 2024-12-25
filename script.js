@@ -6,21 +6,21 @@ const formatTime = (seconds) => {
   const absSeconds = Math.abs(seconds);
 
   if (absSeconds < 0.001) {
-    return `${(seconds * 1e6).toFixed(2)} microseconds`;
+    return `${(seconds * 1e6).toFixed(2).toLocaleString()} microseconds`;
   } else if (absSeconds < 1) {
-    return `${(seconds * 1e3).toFixed(2)} milliseconds`;
+    return `${(seconds * 1e3).toFixed(2).toLocaleString()} milliseconds`;
   } else if (absSeconds < 60) {
-    return `${seconds.toFixed(2)} seconds`;
+    return `${seconds.toFixed(2).toLocaleString()} seconds`;
   } else if (absSeconds < 3600) {
-    return `${(seconds / 60).toFixed(2)} minutes`;
+    return `${(seconds / 60).toFixed(2).toLocaleString()} minutes`;
   } else if (absSeconds < 86400) {
-    return `${(seconds / 3600).toFixed(2)} hours`;
+    return `${(seconds / 3600).toFixed(2).toLocaleString()} hours`;
   } else if (absSeconds < 31557600) { // 1 year in seconds
-    return `${(seconds / 86400).toFixed(2)} days`;
+    return `${(seconds / 86400).toFixed(2).toLocaleString()} days`;
   } else if (absSeconds < 1e8) {
-    return `${(seconds / 31557600).toFixed(2)} years`;
+    return `${(seconds / 31557600).toFixed(2).toLocaleString()} years`;
   } else {
-    return `${(seconds / 31557600000).toFixed(2)} million years`;
+    return `${(seconds / 31557600000).toFixed(2).toLocaleString()} million years`;
   }
 };
 
@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const velocityInKmPerHour = velocityInKmPerSecond * 3600;
 
     velocityLabel.textContent = `${velocity.toFixed(12)}%`;
-    velocityMps.textContent = Math.round(velocityInMetersPerSecond);
-    velocityKps.textContent = Math.round(velocityInKmPerSecond);
-    velocityKph.textContent = Math.round(velocityInKmPerHour);
+    velocityMps.textContent = Math.round(velocityInMetersPerSecond).toLocaleString();
+    velocityKps.textContent = Math.round(velocityInKmPerSecond).toLocaleString();
+    velocityKph.textContent = Math.round(velocityInKmPerHour).toLocaleString();
     velocityPercent.textContent = `${velocity.toFixed(12)}%`;
 
     distanceLabel.textContent = destination.label;
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     travelerTime.textContent = formatTime(properTime);
     observerTime.textContent = formatTime(observerTimeValue);
-    gammaValue.textContent = gamma.toFixed(3);
+    gammaValue.textContent = gamma.toFixed(3).toLocaleString();
     timeDifference.textContent = formatTime(observerTimeValue - properTime);
   };
 
