@@ -73,8 +73,32 @@ function updateDisplay() {
     document.getElementById('remainingToC').textContent = (1 - velocity/100).toExponential(12);
 }
 
+// Create destination tick marks
+function createDestinationTicks() {
+    const tickMarksContainer = document.getElementById('distanceTickMarks');
+    const totalDestinations = destinations.length;
+
+    destinations.forEach((dest, index) => {
+        const tick = document.createElement('div');
+        tick.className = 'tick';
+        tick.style.left = `${(index / (totalDestinations - 1)) * 100}%`;
+
+        const line = document.createElement('div');
+        line.className = 'tick-line';
+
+        const label = document.createElement('div');
+        label.className = 'tick-label';
+        label.textContent = dest.label;
+
+        tick.appendChild(line);
+        tick.appendChild(label);
+        tickMarksContainer.appendChild(tick);
+    });
+}
+
 // Add event listeners
 document.addEventListener('DOMContentLoaded', function() {
+    createDestinationTicks();
     document.getElementById('velocitySlider').addEventListener('input', updateDisplay);
     document.getElementById('distanceSlider').addEventListener('input', updateDisplay);
     updateDisplay();
