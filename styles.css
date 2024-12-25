@@ -48,6 +48,45 @@ input[type="range"].distance {
     margin-bottom: 30px;
 }
 
+.slider-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 50px;  /* Increased to make room for labels */
+}
+
+.tick-marks {
+    position: absolute;
+    width: 100%;
+    top: 30px;  /* Position below slider */
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tick {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+}
+
+.tick-line {
+    width: 1px;
+    height: 10px;
+    background-color: #666;
+    margin-bottom: 5px;
+}
+
+.tick-label {
+    color: #666;
+    font-size: 10px;
+    text-align: center;
+    white-space: pre-line;  /* Allows \n in labels to create line breaks */
+    transform: rotate(-45deg);  /* Angled text for better spacing */
+    transform-origin: top left;
+}
+
 .panels {
     display: grid;
     grid-template-columns: 1fr;
