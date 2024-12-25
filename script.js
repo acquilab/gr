@@ -26,16 +26,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const velocityKph = document.getElementById("velocity-kph");
   const velocityPercent = document.getElementById("velocity-percent");
 
+  velocitySlider.value = 0; // Set initial value to 0
+
   const c = 299792458;
 
-const transformSliderToVelocity = (sliderPos) => {
-  if (sliderPos <= 25) {
-    return (sliderPos * 99) / 25;
-  } else {
-    const localPos = (sliderPos - 25) / 75;
-    return 99 + localPos * (99.999999999999 - 99);
-  }
-};
+  const transformSliderToVelocity = (sliderPos) => {
+    if (sliderPos <= 25) {
+      return (sliderPos * 99) / 25;
+    } else {
+      const localPos = (sliderPos - 25) / 75;
+      return 99 + localPos * (99.999999999999 - 99);
+    }
+  };
 
   const updateUI = () => {
     const sliderValue = Number(velocitySlider.value);
@@ -69,7 +71,7 @@ const transformSliderToVelocity = (sliderPos) => {
         case "light hours":
           return destination.value * 3600;
         case "light years":
-          return destination.value * 31557600 * 365.25;
+          return destination.value * 31557600;
         default:
           return destination.value;
       }
