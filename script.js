@@ -10,15 +10,15 @@ const formatTime = (seconds) => {
   } else if (absSeconds < 1) {
     return `${(seconds * 1e3).toFixed(2).toLocaleString()} milliseconds`;
   } else if (absSeconds < 60) {
-    return `${seconds.toFixed(2).toLocaleString()} seconds`;
+    return `${Math.round(seconds).toLocaleString()} seconds`;
   } else if (absSeconds < 3600) {
-    return `${(seconds / 60).toFixed(2).toLocaleString()} minutes`;
+    return `${Math.round(seconds / 60).toLocaleString()} minutes`;
   } else if (absSeconds < 86400) {
-    return `${(seconds / 3600).toFixed(2).toLocaleString()} hours`;
+    return `${Math.round(seconds / 3600).toLocaleString()} hours`;
   } else if (absSeconds < 31557600) { // 1 year in seconds
-    return `${(seconds / 86400).toFixed(2).toLocaleString()} days`;
+    return `${Math.round(seconds / 86400).toLocaleString()} days`;
   } else if (absSeconds < 1e8) {
-    return `${(seconds / 31557600).toFixed(2).toLocaleString()} years`;
+    return `${Math.round(seconds / 31557600).toLocaleString()} years`;
   } else {
     return `${(seconds / 31557600000).toFixed(2).toLocaleString()} million years`;
   }
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     travelerTime.textContent = formatTime(properTime);
     observerTime.textContent = formatTime(observerTimeValue);
-    gammaValue.textContent = gamma.toFixed(3).toLocaleString();
+    gammaValue.textContent = Math.round(gamma).toLocaleString();
     timeDifference.textContent = formatTime(observerTimeValue - properTime);
   };
 
