@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const c = 299792458;
 
-  const transformSliderToVelocity = (sliderPos) => {
-    if (sliderPos <= 25) {
-      return (sliderPos * 99.999999) / 25;
-    } else {
-      const localPos = (sliderPos - 25) / 75;
-      return 99.999999 + localPos * (99.999999999999 - 99.999999);
-    }
-  };
+const transformSliderToVelocity = (sliderPos) => {
+  if (sliderPos <= 25) {
+    return (sliderPos * 99) / 25;
+  } else {
+    const localPos = (sliderPos - 25) / 75;
+    return 99 + localPos * (99.999999999999 - 99);
+  }
+};
 
   const updateUI = () => {
     const sliderValue = Number(velocitySlider.value);
