@@ -1,28 +1,15 @@
-const formatTime = (seconds) => {
-  if (seconds === Infinity || isNaN(seconds)) {
-    return "∞";
-  }
-
-  const absSeconds = Math.abs(seconds);
-
-  if (absSeconds < 0.001) {
-    return `${(seconds * 1e6).toFixed(2).toLocaleString()} microseconds`;
-  } else if (absSeconds < 1) {
-    return `${(seconds * 1e3).toFixed(2).toLocaleString()} milliseconds`;
-  } else if (absSeconds < 60) {
-    return `${Math.round(seconds).toLocaleString()} seconds`;
-  } else if (absSeconds < 3600) {
-    return `${Math.round(seconds / 60).toLocaleString()} minutes`;
-  } else if (absSeconds < 86400) {
-    return `${Math.round(seconds / 3600).toLocaleString()} hours`;
-  } else if (absSeconds < 31557600) { // 1 year in seconds
-    return `${Math.round(seconds / 86400).toLocaleString()} days`;
-  } else if (absSeconds < 1e8) {
-    return `${Math.round(seconds / 31557600).toLocaleString()} years`;
-  } else {
-    return `${(seconds / 31557600000).toFixed(2).toLocaleString()} million years`;
-  }
-};
+// Define destinations globally
+const destinations = [
+  { label: 'Closest Starbucks', value: 0.5, unit: 'light milliseconds', description: '~150 kilometers' },
+  { label: 'LA to NYC', value: 13.15, unit: 'light milliseconds', description: '~3,944 kilometers' },
+  { label: 'Moon', value: 1.3, unit: 'light seconds', description: '~384,400 km' },
+  { label: 'Sun', value: 8.3, unit: 'light minutes', description: '~150 million km' },
+  { label: 'Edge of Solar System', value: 4.1, unit: 'light hours', description: '~18 billion km' },
+  { label: '1 Light Year', value: 1, unit: 'light years', description: '~9.46 trillion km' },
+  { label: 'Proxima Centauri', value: 4.2, unit: 'light years', description: '~40 trillion km' },
+  { label: 'Edge of Milky Way', value: 100000, unit: 'light years', description: '100,000 light years' },
+  { label: 'Andromeda Galaxy', value: 2500000, unit: 'light years', description: '2.5 million light years' },
+];
 
 document.addEventListener("DOMContentLoaded", () => {
   const velocitySlider = document.getElementById("velocity-slider");
@@ -101,3 +88,29 @@ document.addEventListener("DOMContentLoaded", () => {
   distanceSlider.addEventListener("input", updateUI);
   updateUI();
 });
+
+const formatTime = (seconds) => {
+  if (seconds === Infinity || isNaN(seconds)) {
+    return "∞";
+  }
+
+  const absSeconds = Math.abs(seconds);
+
+  if (absSeconds < 0.001) {
+    return `${(seconds * 1e6).toFixed(2).toLocaleString()} microseconds`;
+  } else if (absSeconds < 1) {
+    return `${(seconds * 1e3).toFixed(2).toLocaleString()} milliseconds`;
+  } else if (absSeconds < 60) {
+    return `${Math.round(seconds).toLocaleString()} seconds`;
+  } else if (absSeconds < 3600) {
+    return `${Math.round(seconds / 60).toLocaleString()} minutes`;
+  } else if (absSeconds < 86400) {
+    return `${Math.round(seconds / 3600).toLocaleString()} hours`;
+  } else if (absSeconds < 31557600) {
+    return `${Math.round(seconds / 86400).toLocaleString()} days`;
+  } else if (absSeconds < 1e8) {
+    return `${Math.round(seconds / 31557600).toLocaleString()} years`;
+  } else {
+    return `${(seconds / 31557600000).toFixed(2).toLocaleString()} million years`;
+  }
+};
