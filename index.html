@@ -4,70 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Dilation Calculator</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="wrapper">
-            <h1 class="title">Relativistic Time Dilation Calculator</h1>
-            <p class="subtitle">Explore the fascinating effects of time dilation caused by near-light speeds.</p>
+    <h1 class="title">Relativistic Time Dilation Calculator</h1>
+    <p class="subtitle">Explore the fascinating effects of time dilation caused by near-light speeds.</p>
 
-            <div class="calculator">
-                <h2 class="section-title">Spacetime Parameters</h2>
-                
-                <!-- Velocity Control -->
-                <div class="control-section">
-                    <label class="label">
-                        Velocity (<span id="velocityValue">99.000000000000</span>% of light speed)
-                    </label>
-                    <div class="slider-container">
-                        <input type="range" id="velocitySlider" min="0" max="100" step="0.0001" value="99" 
-                            class="slider velocity-slider">
-                        <div class="mark-container" id="velocityMarks"></div>
-                    </div>
-                </div>
+    <h2 class="section-header">Spacetime Parameters</h2>
+    
+    <div class="control-group">
+        <label>
+            Velocity (<span id="velocityValue">99.000000000000</span>% of light speed)
+        </label>
+        <input type="range" id="velocitySlider" class="velocity" min="0" max="100" step="0.0001" value="99">
+    </div>
 
-                <!-- Distance Control -->
-                <div class="control-section">
-                    <label class="label">
-                        Distance: <span id="distanceDisplay">0.5 light milliseconds</span>
-                    </label>
-                    <div class="slider-container">
-                        <input type="range" id="distanceSlider" min="0" max="8" value="0" 
-                            class="slider distance-slider">
-                        <div class="mark-container" id="distanceMarks"></div>
-                    </div>
-                </div>
+    <div class="control-group">
+        <label>
+            Distance: <span id="distanceDisplay">0.5 light milliseconds</span>
+        </label>
+        <input type="range" id="distanceSlider" class="distance" min="0" max="8" value="0">
+    </div>
 
-                <!-- Results Panels -->
-                <div class="results-grid">
-                    <!-- Relativistic Effects -->
-                    <div class="panel">
-                        <h3 class="panel-title blue">Relativistic Effects</h3>
-                        <div class="panel-content">
-                            <p>Distance: <span id="effectsDistance">0.5 light milliseconds</span></p>
-                            <p>Traveler Time: <span id="travelerTime">505.1 microseconds</span></p>
-                            <p>Observer Time: <span id="observerTime">3.6 milliseconds</span></p>
-                            <p>Time Dilation (γ): <span id="timeDilation">7.089</span></p>
-                            <p>Time Difference: <span id="timeDifference">3.1 milliseconds</span></p>
-                        </div>
-                    </div>
+    <div class="panels">
+        <div class="panel effects">
+            <h2>Relativistic Effects</h2>
+            <p>Distance: <span id="effectsDistance">0.5 light milliseconds</span></p>
+            <p>Traveler Time: <span id="travelerTime">505.1 microseconds</span></p>
+            <p>Observer Time: <span id="observerTime">3.6 milliseconds</span></p>
+            <p>Time Dilation (γ): <span id="timeDilation">7.089</span></p>
+            <p>Time Difference: <span id="timeDifference">3.1 milliseconds</span></p>
+        </div>
 
-                    <!-- Velocity Details -->
-                    <div class="panel">
-                        <h3 class="panel-title green">Velocity Details</h3>
-                        <div class="panel-content">
-                            <p>Meters/second: <span id="metersPerSecond">0</span></p>
-                            <p>Kilometers/second: <span id="kilometersPerSecond">0</span></p>
-                            <p>Kilometers/hour: <span id="kilometersPerHour">0</span></p>
-                            <p>Light Speed %: <span id="lightSpeedPercent">0</span></p>
-                            <p>Remaining to c: <span id="remainingToC">0</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="panel velocity">
+            <h2>Velocity Details</h2>
+            <p>Meters/second: <span id="metersPerSecond">0</span></p>
+            <p>Kilometers/second: <span id="kilometersPerSecond">0</span></p>
+            <p>Kilometers/hour: <span id="kilometersPerHour">0</span></p>
+            <p>Light Speed %: <span id="lightSpeedPercent">0</span></p>
+            <p>Remaining to c: <span id="remainingToC">0</span></p>
         </div>
     </div>
-    <script src="js/script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
